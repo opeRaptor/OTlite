@@ -1,4 +1,4 @@
-update=07/01/2017 21:21:34
+update=21/01/2017 19:16:15
 version=1
 last_client=kicad
 [general]
@@ -60,5 +60,5 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=bambouLab
-LibName31=ESP8266
+LibName30=ESP8266
+LibName31=bambouLab

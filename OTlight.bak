@@ -28,18 +28,18 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:bambouLab
 LIBS:ESP8266
+LIBS:bambouLab
 LIBS:OTlight-cache
 EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
+Title "OT;Light"
+Date "2017-01-21"
+Rev "0.1"
+Comp "bambou;Lab"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -1355,9 +1355,7 @@ Wire Wire Line
 Wire Wire Line
 	5550 8450 5550 8550
 Wire Wire Line
-	5250 8150 5150 8150
-Wire Wire Line
-	5150 8150 5150 8250
+	5150 7700 5150 8250
 Wire Wire Line
 	5150 8450 5150 8550
 $Comp
@@ -1447,8 +1445,6 @@ Wire Wire Line
 	5550 8950 5550 9050
 Wire Wire Line
 	5550 9250 5550 9350
-Wire Wire Line
-	5250 8950 5150 8950
 Wire Wire Line
 	5150 8950 5150 9050
 Wire Wire Line
@@ -1541,8 +1537,6 @@ Wire Wire Line
 Wire Wire Line
 	5550 10050 5550 10150
 Wire Wire Line
-	5250 9750 5150 9750
-Wire Wire Line
 	5150 9750 5150 9850
 Wire Wire Line
 	5150 10050 5150 10150
@@ -1574,25 +1568,71 @@ Wire Wire Line
 Wire Wire Line
 	3200 2400 2900 2400
 Wire Wire Line
-	4950 1050 1050 1050
+	1050 1050 4950 1050
 Text Notes 3150 10900 0    60   ~ 0
 ESPain
 Wire Wire Line
-	3850 8000 4400 8000
+	4300 8000 3850 8000
 Wire Wire Line
-	4400 8000 4400 6450
+	4300 6450 4300 8000
 Wire Wire Line
-	4400 6450 5350 6450
+	4300 6450 5350 6450
 Wire Wire Line
-	3850 8100 4550 8100
+	4450 8100 3850 8100
 Wire Wire Line
-	4550 8100 4550 6350
+	4450 6350 4450 8100
 Wire Wire Line
-	4550 6350 5350 6350
+	4450 6350 5350 6350
 Wire Wire Line
-	5350 7400 4400 7400
-Connection ~ 4400 7400
+	5350 7400 4300 7400
+Connection ~ 4300 7400
 Wire Wire Line
-	5350 7500 4550 7500
-Connection ~ 4550 7500
+	5350 7500 4450 7500
+Connection ~ 4450 7500
+Connection ~ 5150 8150
+Connection ~ 5150 8950
+Connection ~ 5150 9750
+Wire Wire Line
+	3850 7700 5150 7700
+Wire Wire Line
+	5150 8150 5250 8150
+Wire Wire Line
+	3850 7800 4900 7800
+Wire Wire Line
+	3850 7900 4700 7900
+Wire Wire Line
+	4900 8950 5250 8950
+Wire Wire Line
+	4900 7800 4900 8950
+Wire Wire Line
+	3850 8400 4150 8400
+Wire Wire Line
+	3850 8500 4150 8500
+Wire Wire Line
+	3850 8600 4150 8600
+Wire Wire Line
+	3850 8700 4150 8700
+Text Label 4200 8400 0    60   ~ 0
+DIN
+Text Label 4200 8500 0    60   ~ 0
+LOAD
+Text Label 4200 8600 0    60   ~ 0
+CLK
+Text Label 4200 8700 0    60   ~ 0
+BLANK
+Connection ~ 4150 8400
+Connection ~ 4150 8500
+Connection ~ 4150 8600
+Connection ~ 4150 8700
+Connection ~ 9100 4700
+Connection ~ 9200 4700
+Connection ~ 9300 4700
+Connection ~ 9400 4700
+Connection ~ 12500 4700
+Connection ~ 12600 4700
+Connection ~ 12700 4700
+Wire Wire Line
+	4700 7900 4700 9750
+Wire Wire Line
+	4700 9750 5250 9750
 $EndSCHEMATC
