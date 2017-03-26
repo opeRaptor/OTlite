@@ -1894,4 +1894,8 @@ Wire Wire Line
 Connection ~ 7850 4650
 Connection ~ 10750 4650
 Connection ~ 13200 4650
+Wire Wire Line
+	7100 2700 7100 2350
+Connection ~ 7100 2350
+Connection ~ 7100 2700
 $EndSCHEMATC

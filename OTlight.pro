@@ -1,4 +1,4 @@
-update=Saturday, 18 March 2017 'pmt' 15:14:19
+update=26/03/2017 17:16:11
 version=1
 last_client=kicad
 [general]
@@ -29,7 +29,7 @@ version=1
 NetIExt=net
 [eeschema]
 version=1
-LibDir=../bambouLibs;../bambouLibs
+LibDir=../Bamboulib
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -60,5 +60,3 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=C:/Users/opeRaptor/Documents/GitHub/bambouLibs/bambouLab
-LibName31=bambouLab
