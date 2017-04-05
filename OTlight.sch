@@ -28,6 +28,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
+LIBS:bambouLab
 LIBS:OTlight-cache
 EELAYER 25 0
 EELAYER END
@@ -125,7 +126,7 @@ L Q_NMOS_GSD Q2
 U 1 1 586A7AAA
 P 3650 2950
 F 0 "Q2" H 3950 3000 50  0000 R CNN
-F 1 "Q_NMOS_GSD" H 4300 2900 50  0000 R CNN
+F 1 "RSR030N06TL" H 4300 2900 50  0000 R CNN
 F 2 "TO_SOT_Packages_SMD:SOT-23_Handsoldering" H 3850 3050 50  0001 C CNN
 F 3 "" H 3650 2950 50  0000 C CNN
 	1    3650 2950
@@ -280,7 +281,7 @@ U 1 1 586A7AB8
 P 5150 4200
 F 0 "D1" H 5100 4280 50  0000 L CNN
 F 1 "STPS4S200" H 4870 4120 50  0000 L CNN
-F 2 "Diodes_SMD:D_SMB_Handsoldering" V 5150 4200 50  0001 C CNN
+F 2 "Diodes_SMD:D_SMB-SMC_Universal_Handsoldering" V 5150 4200 50  0001 C CNN
 F 3 "" V 5150 4200 50  0000 C CNN
 	1    5150 4200
 	-1   0    0    1   
@@ -539,7 +540,7 @@ F 1 "D_Zener_Small_ALT" H 7100 1710 50  0000 C CNN
 F 2 "Diodes_SMD:D_SOD-123" V 7100 1800 50  0001 C CNN
 F 3 "" V 7100 1800 50  0000 C CNN
 	1    7100 1800
-	0    -1   -1   0   
+	0    1    1    0   
 $EndComp
 Text Label 8700 4700 3    60   ~ 0
 DIN
@@ -1436,20 +1437,14 @@ Wire Wire Line
 Wire Wire Line
 	4300 8000 3850 8000
 Wire Wire Line
-	4300 6450 4300 8000
-Wire Wire Line
-	4300 6450 5350 6450
+	4300 6350 4300 8000
 Wire Wire Line
 	4450 8100 3850 8100
-Wire Wire Line
-	4450 6350 4450 8100
-Wire Wire Line
-	4450 6350 5350 6350
 Wire Wire Line
 	5350 7400 4300 7400
 Connection ~ 4300 7400
 Wire Wire Line
-	5350 7500 4450 7500
+	4450 7500 5350 7500
 Connection ~ 4450 7500
 Connection ~ 5150 8150
 Connection ~ 5150 8950
@@ -1897,4 +1892,10 @@ Wire Wire Line
 	7100 2700 7100 2350
 Connection ~ 7100 2350
 Connection ~ 7100 2700
+Wire Wire Line
+	4450 6450 4450 8100
+Wire Wire Line
+	5350 6450 4450 6450
+Wire Wire Line
+	5350 6350 4300 6350
 $EndSCHEMATC

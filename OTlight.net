@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source C:/Users/Shizuku/Documents/GitHub/OTL/OTlight.sch)
-    (date "26/03/2017 17:30:24")
+    (date "05/04/2017 21:04:30")
     (tool "Eeschema 4.0.6")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -95,7 +95,7 @@
       (tstamp 586A7AB5))
     (comp (ref D1)
       (value STPS4S200)
-      (footprint Diodes_SMD:D_SMB_Handsoldering)
+      (footprint Diodes_SMD:D_SMB-SMC_Universal_Handsoldering)
       (libsource (lib device) (part D_Schottky_Small))
       (sheetpath (names /) (tstamps /))
       (tstamp 586A7AB8))
@@ -682,10 +682,10 @@
         (pin (num 3) (name SA) (type passive))
         (pin (num 4) (name SB) (type passive)))))
   (libraries
-    (library (logical conn)
-      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\conn.lib"))
     (library (logical device)
       (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\device.lib"))
+    (library (logical conn)
+      (uri "C:\\Program Files\\KiCad\\share\\kicad\\library\\conn.lib"))
     (library (logical OTlight-cache)
       (uri C:\Users\Shizuku\Documents\GitHub\OTL\OTlight-cache.lib)))
   (nets
