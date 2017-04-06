@@ -28,6 +28,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
+LIBS:bambouLab
 LIBS:OTlight-cache
 EELAYER 25 0
 EELAYER END
@@ -1436,20 +1437,14 @@ Wire Wire Line
 Wire Wire Line
 	4300 8000 3850 8000
 Wire Wire Line
-	4300 6450 4300 8000
-Wire Wire Line
-	4300 6450 5350 6450
+	4300 6350 4300 8000
 Wire Wire Line
 	4450 8100 3850 8100
-Wire Wire Line
-	4450 6350 4450 8100
-Wire Wire Line
-	4450 6350 5350 6350
 Wire Wire Line
 	5350 7400 4300 7400
 Connection ~ 4300 7400
 Wire Wire Line
-	5350 7500 4450 7500
+	4450 7500 5350 7500
 Connection ~ 4450 7500
 Connection ~ 5150 8150
 Connection ~ 5150 8950
@@ -1897,4 +1892,10 @@ Wire Wire Line
 	7100 2700 7100 2350
 Connection ~ 7100 2350
 Connection ~ 7100 2700
+Wire Wire Line
+	4450 6450 4450 8100
+Wire Wire Line
+	5350 6450 4450 6450
+Wire Wire Line
+	5350 6350 4300 6350
 $EndSCHEMATC

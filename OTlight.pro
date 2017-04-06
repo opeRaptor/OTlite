@@ -1,4 +1,4 @@
-update=05/04/2017 22:07:51
+update=06/04/2017 19:22:05
 version=1
 last_client=kicad
 [general]
@@ -60,4 +60,4 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=bambouLab
+LibName30=C:/Users/opeRaptor/Documents/GitHub/bambouLibs/bambouLab
