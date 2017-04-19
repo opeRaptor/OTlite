@@ -1,36 +1,11 @@
 #include <Wire.h>
 #include <SPI.h>
-#include <ESP8266WiFi.h>
-#include <WiFiUdp.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include "RTClib.h"
 
 RTC_DS3231 rtc;
-/// network
-const char ssid[] = "WongKei_FreeDialUp";
-const char pass[] = "elpsycongroo";
-//=======================================INCLUDE==NTP======================================
-/// NTP Server address
-const char* ntpServerName = "0.uk.pool.ntp.org";
-const double timezone = 1.0;
-// local port to listen for UDP packets
-const unsigned int localPort = 2390;
-/// A UDP instance to let us send and receive packets over UDP
-WiFiUDP udp;
-
-/// Weekday strings.
-char daysOfTheWeek[][4] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-/**
- * @brief NTP Server IP variable.
- *
- * Don't hardwire the IP address or we won't get the benefits of the pool.
- */
-IPAddress timeServerIP;
-/// NTP time stamp is in the first 48 bytes of the message
-const int NTP_PACKET_SIZE = 48;
-/// buffer to hold incoming and outgoing packets
-byte packetBuffer[ NTP_PACKET_SIZE];
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 #define BME_SCK 13
 #define BME_MISO 12
