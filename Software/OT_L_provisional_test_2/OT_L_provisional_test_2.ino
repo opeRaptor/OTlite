@@ -24,15 +24,12 @@ int dataPin = 14;
 int latch = 12;
 void Displaynumber(int Nixietodisplay [8]);
 void Displaynumber(int Nixietodisplay);
-bool adjust(void);
-void sendNTPpacket(IPAddress *address);
-
 
 void setup() {
 
   Serial.begin(9600);
   Wire.pins(0, 2); //SDA and SCL
-
+  Serial.println(F("BME280 test"));
 
   if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
@@ -42,27 +39,6 @@ void setup() {
   if (rtc.lostPower()) {
     Serial.println("RTC lost power, lets set the time!");
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  }
-Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, pass);
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
-    //digitalWrite(clicker,HIGH);
-    delay(50);
-    //digitalWrite(clicker,LOW);
-  }
-  Serial.println(WiFi.localIP());
-
-  // Start UDP Server to receive the NTP response.
-  Serial.println("Starting UDP");
-  udp.begin(localPort);
-  Serial.println("Initial RTC sync with NTP");
-  while (!adjust()){
-    adjust();
   }
 
   pinMode(clockPin, OUTPUT);
@@ -84,11 +60,26 @@ Serial.print("Connecting to ");
     digitalWrite(clockPin, LOW);
   }
 
+
+  bool status;
+
+  // default settings
+  status = bme.begin();
+  if (!status) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+    while (1);
+  }
+
+  Serial.println("-- Default Test --");
+  delayTime = 1000;
+
+  Serial.println();
 }
+
 
 void loop() {
   int NixieArray [8];
-    Displaynumber(0000);
+
   DateTime now = rtc.now();
   
   NixieArray [0] = now.hour()/10;
@@ -265,124 +256,7 @@ void printBME280Values() {
   Serial.println();
 }
 
-//=======================================NTP==FUNCTION============================================
-/**
- * @brief Adjust the DS3231 with current date and time.
- *
- * <pre>
- * NTPv4 Basic Header Specification:
- *
- * Bytes  : Description
- * -------:----------------------
- *       0: LI(2), VN(3), Mode(3)
- *       1: Stratum
- *       2: Poll
- *       3: Precision
- *  4 -  7: Root Delay
- *  8 - 11: Root Dispersion
- * 12 - 15: Reference ID
- * 16 - 23: Reference Timestamp
- * 24 - 31: Origin Timestamp
- * 32 - 39: Receive Timestamp
- * 40 - 47: Transmit Timestamp
- *
- * Transmit Timestamp:
- * Time at the server when the response left for the client, in NTP timestamp format.
- *
- *
- * NTP timestamp format
- *
- * Bytes: Description
- * -----:-------------------
- * 0 - 3: Seconds since 1900
- * 4 - 7: Fraction of Second
- * </pre>
- *
- */
-bool adjust(void)
-{
-  unsigned long mi;
-  int cb = 0;
 
-  //get a random server from the pool
-  WiFi.hostByName(ntpServerName, timeServerIP);
-
-  // send an NTP packet to a time server
-  sendNTPpacket(&timeServerIP);
-  mi = millis();
-
-  // wait to see if a reply is available
-  while (millis() - mi < 2000 && !cb)
-  {
-    cb = udp.parsePacket();
-    yield();
-  }
-
-  if (!cb)
-  {
-    Serial.println("[ERROR]: No packet available.");
-
-    return 0;
-  }
-
-  //Serial.print("packet received, length=");
-  //Serial.println(cb);
-  // We've received a packet, read the data from it
-  udp.read(packetBuffer, NTP_PACKET_SIZE); // read the packet into the buffer
-
-  //the timestamp starts at byte 40 of the received packet and is four bytes,
-  // or two words, long. First, esxtract the two words:
-
-  unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
-  unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-  // combine the four bytes (two words) into a long integer
-  // this is NTP time (seconds since Jan 1 1900):
-  unsigned long secsSince1900 = highWord << 16 | lowWord;
-  //Serial.print("Seconds since Jan 1 1900 = " );
-  //Serial.println(secsSince1900);
-
-  // now convert NTP time into everyday time:
-  Serial.print("Unix UTC time = ");
-  // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
-  const unsigned long seventyYears = 2208988800UL;
-  // subtract seventy years:
-  unsigned long epoch = secsSince1900 - seventyYears;
-  // print Unix time:
-  Serial.println(epoch);
-
-  // adjust to user timezone
-  epoch += timezone * 3600;
-
-  //rtc.setEpoch(epoch);
-  rtc.adjust(epoch); //adjust RTC time to NTP time
-  return 1;
-}
-
-void sendNTPpacket(IPAddress *address)
-{
-  Serial.println("sending NTP packet...");
-
-  // set all bytes in the buffer to 0
-  memset(packetBuffer, 0, NTP_PACKET_SIZE);
-
-  // Initialize values needed to form NTP request
-  // (see URL above for details on the packets)
-  packetBuffer[0] = 0b11100011;   // LI, Version, Mode
-  packetBuffer[1] = 0;     // Stratum, or type of clock
-  packetBuffer[2] = 6;     // Polling Interval
-  packetBuffer[3] = 0xEC;  // Peer Clock Precision
-  // 8 bytes of zero for Root Delay & Root Dispersion
-  packetBuffer[12]  = 49;
-  packetBuffer[13]  = 0x4E;
-  packetBuffer[14]  = 49;
-  packetBuffer[15]  = 52;
-
-  // all NTP fields have been given values, now
-  // you can send a packet requesting a timestamp:
-  udp.beginPacket(*address, 123); //NTP requests are to port 123
-  udp.write(packetBuffer, NTP_PACKET_SIZE);
-  udp.endPacket();
-}
 
 /*   for (int i = 0; i < 40; i++)
    {
