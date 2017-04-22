@@ -11,6 +11,9 @@ char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 #define BME_MISO 12
 #define BME_MOSI 11
 #define BME_CS 10
+#define Left_button 16
+#define Middle_button 5
+#define Right_button 4
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
@@ -74,81 +77,125 @@ void setup() {
   delayTime = 1000;
 
   Serial.println();
+  Displaynumber (0000);
+  delay(1000);
 }
 
 
 void loop() {
   int NixieArray [8];
+  int NixieArray2 [8];
+  int Multiplexing [8];
 
-  DateTime now = rtc.now();
-  
-  NixieArray [0] = now.hour()/10;
-  NixieArray [1] = now.hour()%10;
-  NixieArray [2] = now.minute()/10;
-  NixieArray [3] = now.minute()%10;
-  NixieArray [4] = 0;
-  NixieArray [5] = 0;
-  NixieArray [6] = 0;
-  NixieArray [7] = 0;
-  Displaynumber(NixieArray);
+  Multiplexing [0] = 10;
+  Multiplexing [1] = 10;
+  Multiplexing [2] = 10;
+  Multiplexing [3] = 10;
 
-  delay(15);
-  if ((now.second()%2)==1)NixieArray [5] = 2;
-  else NixieArray [6] = 1;
-
-  NixieArray [0] = 10;
-  NixieArray [1] = 10;
-  NixieArray [2] = 10;
-  NixieArray [3] = 10;
-  Displaynumber(NixieArray);
-  delay (5);
-
-// Display temperature when left button is pressed
-  /*while (digitalRead(16)==1)   
+  while (1)
   {
-    int a = int(bme.readTemperature());
-    NixieArray [2] = (a-23)/10;
-    NixieArray [3] = (a-23)%10;
-    NixieArray [0] = 10;
-    NixieArray [1] = 10;
+    for (int i = 0; i < 8; ++i)
+    {
+      NixieArray2 [i] = NixieArray [i];
+    }
+    DateTime now = rtc.now();
+
+    NixieArray [0] = now.hour() / 10;
+    NixieArray [1] = now.hour() % 10;
+    NixieArray [2] = now.minute() / 10;
+    NixieArray [3] = now.minute() % 10;
     NixieArray [4] = 0;
     NixieArray [5] = 0;
     NixieArray [6] = 0;
     NixieArray [7] = 0;
-    Displaynumber(NixieArray);
-    delay(50);
-  }*/
-  
-// Display Date when pressed
-  if (digitalRead(5)==1)
-  {
-    Transition ((now.hour()*100 + now.minute()), (now.month()*100 + now.day()), 17);
-    while (digitalRead(5)==1)
+
+
+    Multiplexing [5] = 0;
+    Multiplexing [6] = 0;
+    if ((now.second() % 2) == 1) Multiplexing [5] = 2;
+    else Multiplexing [6] = 1;
+
+    Transition(NixieArray2, NixieArray, 17);
+    delay(15);
+
+    Displaynumber(Multiplexing);
+    delay (5);
+
+    // Display Date when pressed
+    if (digitalRead(Left_button) == 1)
     {
-      NixieArray [0] = now.month()/10;
-      NixieArray [1] = now.month()%10;
-      NixieArray [2] = now.day()/10;
-      NixieArray [3] = now.day()%10;
-      NixieArray [4] = 0;
-      NixieArray [5] = 2;
-      NixieArray [6] = 0;
-      NixieArray [7] = 0;
-      Displaynumber(NixieArray);
-      delay(50);
+      NixieArray2 [0] = now.month() / 10;
+      NixieArray2 [1] = now.month() % 10;
+      NixieArray2 [2] = now.day() / 10;
+      NixieArray2 [3] = now.day() % 10;
+      NixieArray2 [4] = 0;
+      NixieArray2 [5] = 2;
+      NixieArray2 [6] = 0;
+      NixieArray2 [7] = 0;
+      Transition (NixieArray, NixieArray2, 8);
+      while (digitalRead(Left_button) == 1)
+      {
+        delay(50);
+      }
+      Transition (NixieArray2, NixieArray, 8);
     }
-    Transition ((now.month()*100 + now.day()), (now.hour()*100 + now.minute()), 17);
-  }  
+
+
+    // Display Date when pressed
+    if (digitalRead(Middle_button) == 1)
+    {
+      NixieArray2 [0] = now.month() / 10;
+      NixieArray2 [1] = now.month() % 10;
+      NixieArray2 [2] = now.day() / 10;
+      NixieArray2 [3] = now.day() % 10;
+      NixieArray2 [4] = 0;
+      NixieArray2 [5] = 2;
+      NixieArray2 [6] = 0;
+      NixieArray2 [7] = 0;
+      Transition (NixieArray, NixieArray2, 14);
+      while (digitalRead(Middle_button) == 1)
+      {
+        delay(50);
+      }
+      Transition (NixieArray2, NixieArray, 14);
+    }
+
+
+    // Display Date when pressed
+    if (digitalRead(Right_button) == 1)
+    {
+      NixieArray2 [0] = now.month() / 10;
+      NixieArray2 [1] = now.month() % 10;
+      NixieArray2 [2] = now.day() / 10;
+      NixieArray2 [3] = now.day() % 10;
+      NixieArray2 [4] = 0;
+      NixieArray2 [5] = 2;
+      NixieArray2 [6] = 0;
+      NixieArray2 [7] = 0;
+      Transition (NixieArray, NixieArray2, 20);
+      while (digitalRead(Right_button) == 1)
+      {
+        delay(50);
+      }
+      Transition (NixieArray2, NixieArray, 20);
+    }
+  }
 }
 
+//=======================================FUNCTION==DISPLAYNUMBER==========================
+// Display numbers and dots, from an int array, left to right, 4 first are numbers, 4 last are dots
+// If a number is not in the range 0-9, no numbers are lit up
+// Dots: 0 is nothing, 1 is left dot, 2 is right dot, 3 is both dots
 void Displaynumber(int Nixietodisplay [8])
 {
-  int Nixiearray [11] = {8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 10};
+  int Nixiearray [10] = {8, 9, 0, 1, 2, 3, 4, 5, 6, 7};
   int j;
 
   for (int k = 3; k >= 0; k--)
   {
+    digitalWrite(latch, LOW);
     digitalWrite(dataPin, HIGH);
-    j = Nixiearray [Nixietodisplay [k]];
+
     if ((Nixietodisplay [k + 4] == 3) || (Nixietodisplay [k + 4] == 1))   digitalWrite(dataPin, LOW);
     digitalWrite(clockPin, HIGH);
     digitalWrite(clockPin, LOW);
@@ -159,24 +206,33 @@ void Displaynumber(int Nixietodisplay [8])
     digitalWrite(clockPin, LOW);
     digitalWrite(dataPin, HIGH);
 
-    for (int i = 0; i < j; i++)
+    if ((Nixietodisplay [k] > 9) || (Nixietodisplay [k] < 0))
     {
-      digitalWrite(clockPin, HIGH);
-      digitalWrite(clockPin, LOW);
+      for (int i = 0; i < 10; i++)
+      {
+        digitalWrite(clockPin, HIGH);
+        digitalWrite(clockPin, LOW);
+      }
     }
-    if (j != 10)
+    else
     {
+      j = Nixiearray [Nixietodisplay [k]];
+      for (int i = 0; i < j; i++)
+      {
+        digitalWrite(clockPin, HIGH);
+        digitalWrite(clockPin, LOW);
+      }
       digitalWrite(dataPin, LOW);
       digitalWrite(clockPin, HIGH);
       digitalWrite(clockPin, LOW);
+      digitalWrite(dataPin, HIGH);
+      for (int i = 0; i < (9 - j); i++)
+      {
+        digitalWrite(clockPin, HIGH);
+        digitalWrite(clockPin, LOW);
+      }
     }
-
-    digitalWrite(dataPin, HIGH);
-    for (int i = 0; i < (9 - j); i++)
-    {
-      digitalWrite(clockPin, HIGH);
-      digitalWrite(clockPin, LOW);
-    }
+    digitalWrite(latch, HIGH);
   }
 }
 
@@ -191,7 +247,7 @@ void Displaynumber(int Nixietodisplay)
   nixiebuffer [5] = 0;
   nixiebuffer [6] = 0;
   nixiebuffer [7] = 0;
-  if(Nixietodisplay == 10000)
+  if (Nixietodisplay == 10000)
   {
     nixiebuffer [0] = 10;
     nixiebuffer [1] = 10;
@@ -202,9 +258,18 @@ void Displaynumber(int Nixietodisplay)
   Displaynumber(nixiebuffer);
 }
 
-void Transition (int before, int after, int duration)
+//=======================================FUNCTION==TRANSITION=============================
+// Takes an array, and do a smooth transition from the before array to the after, for a given duration
+void Transition (int before [8], int after [8], int duration)
 {
-  for (int i = 0; i < duration; i++)
+  for (int i = 0; i < 8; ++i)
+  {
+    if ((before [i]) != (after [i])) goto Change;
+  }
+  Displaynumber (before);
+  return;
+
+Change: for (int i = 0; i < duration; i++)
   {
     Displaynumber (before);
     delay (duration - i);
@@ -213,6 +278,7 @@ void Transition (int before, int after, int duration)
   }
 }
 
+//=======================================FUNCTION==SERIAL==RTC============================
 void printRTCValues() {
   DateTime now = rtc.now();
 
@@ -235,6 +301,7 @@ void printRTCValues() {
   delay(delayTime);
 }
 
+//=======================================FUNCTION==SERIAL==TEMP===========================
 void printBME280Values() {
   Serial.print("Temperature = ");
   Serial.print(bme.readTemperature());
@@ -269,21 +336,21 @@ void printBME280Values() {
 */
 
 
-  /*
-    while (digitalRead(16)==1)
-    {
-      Displaynumber(1000);
-      delay(50);
-    }
+/*
+  while (digitalRead(16)==1)
+  {
+    Displaynumber(1000);
+    delay(50);
+  }
 
-    while (digitalRead(5)==1)
-    {
-      Displaynumber(100);
-      delay(50);
-    }
+  while (digitalRead(5)==1)
+  {
+    Displaynumber(100);
+    delay(50);
+  }
 
-    while (digitalRead(4)==1)
-    {
-      Displaynumber(10);
-      delay(50);
-    }*/
+  while (digitalRead(4)==1)
+  {
+    Displaynumber(10);
+    delay(50);
+  }*/
