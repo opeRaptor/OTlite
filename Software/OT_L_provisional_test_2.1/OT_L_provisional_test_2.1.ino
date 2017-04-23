@@ -21,12 +21,14 @@ Adafruit_BME280 bme; // I2C
 
 unsigned long delayTime;
 
+int NixieArray [8];
+int PreviousArray [8];
+int Brightness = 10;
+
 int clockPin = 13;
 int BL = 15;
 int dataPin = 14;
 int latch = 12;
-void Displaynumber(int Nixietodisplay [8]);
-void Displaynumber(int Nixietodisplay);
 
 void setup() {
 
@@ -77,129 +79,39 @@ void setup() {
   delayTime = 1000;
 
   Serial.println();
-  Displaynumber (0000);
-  delay(1000);
+  DisplayFB (0);
+  delay(500);
 }
 
 
-void loop() {
-  int NixieArray [8];
-  int NixieArray2 [8];
-  int Multiplexing [8];
+void loop()
+{
+  GetTime();
+  Transition(13);
 
-  Multiplexing [0] = 10;
-  Multiplexing [1] = 10;
-  Multiplexing [2] = 10;
-  Multiplexing [3] = 10;
-
-  while (1)
+  if (digitalRead(Left_button) == 1)
   {
-    for (int i = 0; i < 8; ++i)
+    //see bottom of program for draft of chrono
+  }
+
+  if (digitalRead(Middle_button) == 1)
+  {
+    GetDate();
+    Transition (14);
+    while (digitalRead(Middle_button) == 1)
     {
-      NixieArray2 [i] = NixieArray [i];
+      Display();
     }
-    DateTime now = rtc.now();
-
-    NixieArray [0] = now.hour() / 10;
-    NixieArray [1] = now.hour() % 10;
-    NixieArray [2] = now.minute() / 10;
-    NixieArray [3] = now.minute() % 10;
-    NixieArray [4] = 0;
-    NixieArray [5] = 0;
-    NixieArray [6] = 0;
-    NixieArray [7] = 0;
-
-    Multiplexing [5] = 0;
-    Multiplexing [6] = 0;
-    if ((now.second() % 2) == 1) Multiplexing [5] = 2;
-    else Multiplexing [6] = 1;
-
-    Transition(NixieArray2, NixieArray, 17);
-    delay(3);
-
-    Displaynumber(Multiplexing);
-    delay (1);
-
-/*int testa [2] = {1, 2};
-    test (*testa);
-    delay (1000);*/
-
-    if (digitalRead(Left_button) == 1)
-    {
-      unsigned long InitialTime = millis();
-      unsigned long RelativeTime;
-      int chronos;
-      bool ButtonReleased = 0;
-
-      Multiplexing [4] = 2;
-      Multiplexing [5] = 0;
-      Multiplexing [6] = 2;
-      Multiplexing [7] = 0;
-      
-      // Chronos, works up to 10 min so far
-      while (digitalRead(Left_button) == 1 || ButtonReleased == 1)
-      {
-        RelativeTime = millis();
-        chronos = int((RelativeTime - InitialTime) / 10);
-        
-        NixieArray [0] = chronos / 600;
-        NixieArray [1] = (chronos/100)%6;
-        NixieArray [2] = (chronos/10)%10;
-        NixieArray [3] = chronos % 10;
-
-        Displaynumber(NixieArray);
-        delay(3);
-
-        Displaynumber(Multiplexing);
-        delay (1);
-      }
-    }
-
-    if (digitalRead(Middle_button) == 1)
-    {
-      NixieArray2 [0] = now.month() / 10;
-      NixieArray2 [1] = now.month() % 10;
-      NixieArray2 [2] = now.day() / 10;
-      NixieArray2 [3] = now.day() % 10;
-      NixieArray2 [4] = 0;
-      NixieArray2 [5] = 2;
-      NixieArray2 [6] = 0;
-      NixieArray2 [7] = 0;
-      Transition (NixieArray, NixieArray2, 14);
-      while (digitalRead(Middle_button) == 1)
-      {
-        delay(50);
-      }
-      Transition (NixieArray2, NixieArray, 14);
-    }
-
-
-    // Display Date when pressed
-    if (digitalRead(Right_button) == 1)
-    {
-      NixieArray2 [0] = now.month() / 10;
-      NixieArray2 [1] = now.month() % 10;
-      NixieArray2 [2] = now.day() / 10;
-      NixieArray2 [3] = now.day() % 10;
-      NixieArray2 [4] = 0;
-      NixieArray2 [5] = 2;
-      NixieArray2 [6] = 0;
-      NixieArray2 [7] = 0;
-      Transition (NixieArray, NixieArray2, 20);
-      while (digitalRead(Right_button) == 1)
-      {
-        delay(50);
-      }
-      Transition (NixieArray2, NixieArray, 20);
-    }
+    GetTime();
+    Transition (14);
   }
 }
 
-//=======================================FUNCTION==DISPLAYNUMBER==========================
+//=======================================FUNCTION==DISPLAYFB==========================
 // Display numbers and dots, from an int array, left to right, 4 first are numbers, 4 last are dots
 // If a number is not in the range 0-9, no numbers are lit up
 // Dots: 0 is nothing, 1 is left dot, 2 is right dot, 3 is both dots
-void Displaynumber(int Nixietodisplay [8])
+void DisplayFB(int Nixietodisplay [8])
 {
   int Nixiearray [10] = {8, 9, 0, 1, 2, 3, 4, 5, 6, 7};
   int j;
@@ -249,7 +161,7 @@ void Displaynumber(int Nixietodisplay [8])
   }
 }
 
-void Displaynumber(int Nixietodisplay)
+void DisplayFB(int Nixietodisplay)
 {
   int nixiebuffer [8];
   nixiebuffer [0] = Nixietodisplay / 1000;
@@ -268,27 +180,113 @@ void Displaynumber(int Nixietodisplay)
     nixiebuffer [3] = 10;
   }
 
-  Displaynumber(nixiebuffer);
+  DisplayFB(nixiebuffer);
+}
+
+//=======================================FUNCTION==DISPLAY=============================
+// Display NixieArray, with adjustable Brightness
+void Display (void)
+{
+  int dots [8] = {10, 10, 10, 10, 0, 0, 0, 0};
+  dots [4] = NixieArray [4];
+  dots [5] = NixieArray [5];
+  dots [6] = NixieArray [6];
+  dots [7] = NixieArray [7];
+
+  DisplayFB (NixieArray);
+  delayMicroseconds (Brightness * 300);
+
+  DisplayFB (dots);
+  delayMicroseconds (Brightness * 100);
+
+  DisplayFB (10000);
+  delayMicroseconds (3000 - Brightness * 300);
+
+  for (int i = 0; i < 8; ++i)
+  {
+    PreviousArray [i] = NixieArray [i];
+  }
 }
 
 //=======================================FUNCTION==TRANSITION=============================
-// Takes an array, and do a smooth transition from the before array to the after, for a given duration
-void Transition (int before [8], int after [8], int duration)
+// Do a smooth transition between the previous array dipslayed and NiexieArray, for a given duration
+void Transition (int duration)
 {
   for (int i = 0; i < 8; ++i)
   {
-    if ((before [i]) != (after [i])) goto Change;
+    if ((PreviousArray [i]) != (NixieArray [i])) goto Change;
   }
-  Displaynumber (before);
+  Display ();
   return;
 
-Change: for (int i = 0; i < duration; i++)
+Change:
+  int dots [8] = {10, 10, 10, 10, 0, 0, 0, 0};
+  dots [4] = NixieArray [4];
+  dots [5] = NixieArray [5];
+  dots [6] = NixieArray [6];
+  dots [7] = NixieArray [7];
+
+  int dots2 [8] = {10, 10, 10, 10, 0, 0, 0, 0};
+  dots2 [4] = PreviousArray [4];
+  dots2 [5] = PreviousArray [5];
+  dots2 [6] = PreviousArray [6];
+  dots2 [7] = PreviousArray [7];
+
+  for (int i = 0; i < duration; i++)
   {
-    Displaynumber (before);
-    delay (duration - i);
-    Displaynumber (after);
-    delay (i);
+    DisplayFB (PreviousArray);
+    delayMicroseconds ((duration - i) * 1000 * Brightness / 10);
+    DisplayFB (dots2);
+    delayMicroseconds ((duration - i) * 1000 * Brightness / 30);
+    DisplayFB (10000);
+    delayMicroseconds ((duration - i) * 1000 * (10 - Brightness) / 10);
+
+
+    DisplayFB (NixieArray);
+    delayMicroseconds (i * 1000 * Brightness / 10);
+    DisplayFB (dots);
+    delayMicroseconds (i * 1000 * Brightness / 30);
+    DisplayFB (10000);
+    delayMicroseconds (i * 1000 * (10 - Brightness) / 10);
   }
+  for (int i = 0; i < 8; ++i)
+  {
+    PreviousArray [i] = NixieArray [i];
+  }
+}
+
+//=======================================FUNCTION==GETTIME================================
+void GetTime()
+{
+  DateTime now = rtc.now();
+
+  NixieArray [0] = now.hour() / 10;
+  NixieArray [1] = now.hour() % 10;
+  NixieArray [2] = now.minute() / 10;
+  NixieArray [3] = now.minute() % 10;
+  NixieArray [4] = 0;
+  NixieArray [5] = 0;
+  NixieArray [6] = 0;
+  NixieArray [7] = 0;
+
+  if ((now.second() % 2) == 1) NixieArray [5] = 2;
+  else NixieArray [6] = 1;
+}
+
+
+//=======================================FUNCTION==GETDATE================================
+void GetDate()
+{
+  DateTime now = rtc.now();
+
+  NixieArray [0] = now.month() / 10;
+  NixieArray [1] = now.month() % 10;
+  NixieArray [2] = now.day() / 10;
+  NixieArray [3] = now.day() % 10;
+  NixieArray [4] = 0;
+  NixieArray [5] = 2;
+  NixieArray [6] = 0;
+  NixieArray [7] = 0;
 }
 
 //=======================================FUNCTION==SERIAL==RTC============================
@@ -336,39 +334,34 @@ void printBME280Values() {
   Serial.println();
 }
 
-void test (int testarray [2])
-{
-  int i;
-  i =  testarray [1] + testarray [0]*10;
-  Displaynumber (i);
-}
-
 /*   for (int i = 0; i < 40; i++)
    {
-  Displaynumber(random(0, 9), 0, 0);
-  Displaynumber(random(0, 9), 0, 0);
-  Displaynumber(random(0, 9), 0, 0);
-  Displaynumber(random(0, 9), 0, 0);
+  DisplayFB(random(0, 9), 0, 0);
+  DisplayFB(random(0, 9), 0, 0);
+  DisplayFB(random(0, 9), 0, 0);
+  DisplayFB(random(0, 9), 0, 0);
   delay(30);
    }
 */
 
 
-/*
-  while (digitalRead(16)==1)
-  {
-    Displaynumber(1000);
-    delay(50);
-  }
+     /* unsigned long InitialTime = millis();
+      unsigned long RelativeTime;
+      int chronos;
+      bool ButtonReleased = 0;
 
-  while (digitalRead(5)==1)
-  {
-    Displaynumber(100);
-    delay(50);
-  }
+      Multiplexing [4] = 2;
+      Multiplexing [5] = 0;
+      Multiplexing [6] = 2;
+      Multiplexing [7] = 0;
 
-  while (digitalRead(4)==1)
-  {
-    Displaynumber(10);
-    delay(50);
-  }*/
+      // Chronos, works up to 10 min so far
+      while (digitalRead(Left_button) == 1 || ButtonReleased == 1)
+      {
+       RelativeTime = millis();
+       chronos = int((RelativeTime - InitialTime) / 100);
+
+       NixieArray [0] = chronos / 600;
+       NixieArray [1] = (chronos / 100) % 6;
+       NixieArray [2] = (chronos / 10) % 10;
+       NixieArray [3] = chronos % 10;*/
