@@ -89,8 +89,6 @@ void setup() {
   delayTime = 1000;
 
   Serial.println();
-  displayUpdate (1234, 15);
-  delay(500);
 }
 
 
@@ -146,10 +144,13 @@ void displayUpdate (int duration)
   delayMicroseconds (Brightness * 300);
 
   shift (dots);
-  delayMicroseconds (Brightness * 100);
+  delayMicroseconds (Brightness * 50);
 
-  shift (10000);
-  delayMicroseconds (3000 - Brightness * 300);
+  if (Brightness != 10)
+  {
+    shift (10000);
+    delayMicroseconds (3000 - Brightness * 300);
+  }
 
   for (int i = 0; i < 8; ++i)
   {
@@ -174,16 +175,22 @@ Change:
     shift (PreviousArray);
     delayMicroseconds ((duration - i) * 1000 * Brightness / 10);
     shift (dots2);
-    delayMicroseconds ((duration - i) * 1000 * Brightness / 30);
+    delayMicroseconds ((duration - i) * 1000 * Brightness / 60);
+    if (Brightness != 10)
+    {
     shift (10000);
     delayMicroseconds ((duration - i) * 1000 * (10 - Brightness) / 10);
+    }
 
     shift (NixieArray);
     delayMicroseconds (i * 1000 * Brightness / 10);
     shift (dots);
-    delayMicroseconds (i * 1000 * Brightness / 30);
+    delayMicroseconds (i * 1000 * Brightness / 60);
+    if (Brightness != 10)
+    {
     shift (10000);
     delayMicroseconds (i * 1000 * (10 - Brightness) / 10);
+    }
   }
   for (int i = 0; i < 8; ++i)
   {
