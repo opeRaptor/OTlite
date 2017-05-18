@@ -298,17 +298,6 @@ F 3 "" H 5400 4350 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C_Small C11
-U 1 1 586A7ABB
-P 5750 4350
-F 0 "C11" H 5760 4420 50  0000 L CNN
-F 1 "1u" H 5760 4270 50  0000 L CNN
-F 2 "Capacitors_SMD:C_2220_HandSoldering" H 5750 4350 50  0001 C CNN
-F 3 "" H 5750 4350 50  0000 C CNN
-	1    5750 4350
-	1    0    0    -1  
-$EndComp
-$Comp
 L GND #PWR09
 U 1 1 586A7ABC
 P 5400 4550
