@@ -1,14 +1,14 @@
 Obsolete Time Lite or O;TL for short, is the natural evolution of a previous project aiming to design the perfect desktop Nixie clock. 
 
- Minimal design
+ -Minimal design
  
- Small form factor 
+ -Small form factor 
  
- WiFi capable 
+ -WiFi capable 
  
- USB power 
+ -USB power 
  
- Various atmospheric sensors. 
+ -Various atmospheric sensors. 
 
 
 
