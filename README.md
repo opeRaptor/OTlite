@@ -17,3 +17,5 @@ Reach out on Twitter:
 
 Follow development on HackaDay.io:
 https://hackaday.io/project/20439-obsolete-time-lite-a-minty-nixie-clock
+
+![Alt text](https://cdn.hackaday.io/images/1330081493153132484.jpg?raw=true "OTL")
