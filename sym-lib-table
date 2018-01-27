@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name OTlight-rescue)(type Legacy)(uri ${KIPRJMOD}/OTlight-rescue.lib)(options "")(descr ""))
+  (lib (name bambouLab)(type Legacy)(uri C:/Users/opeRaptor/Documents/GitHub/bambouLibs/bambouLab.lib)(options "")(descr ""))
+)
