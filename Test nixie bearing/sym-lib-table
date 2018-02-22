@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name Test-nixie-bearing-rescue)(type Legacy)(uri "${KIPRJMOD}/Test nixie bearing-rescue.lib")(options "")(descr ""))
+)

@@ -1,0 +1,31 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# Test-nixie-bearing-rescue:IN-14-bambouLab
+#
+DEF Test-nixie-bearing-rescue:IN-14-bambouLab U 0 40 Y Y 1 F N
+F0 "U" 450 350 60 H V C CNN
+F1 "Test-nixie-bearing-rescue:IN-14-bambouLab" -350 350 60 H V C CNN
+F2 "" 300 -50 60 V I C CNN
+F3 "" 300 -50 60 V I C CNN
+DRAW
+A -550 225 225 901 -901 0 1 0 N -550 450 -550 0
+A 650 225 225 -899 899 0 1 0 N 650 0 650 450
+S -550 450 650 0 0 1 0 N
+X anode 1 0 650 200 D 50 50 1 1 I
+X eight 10 300 -200 200 U 50 50 1 1 I
+X nine 11 400 -200 200 U 50 50 1 1 I
+X zero 12 -500 -200 200 U 50 50 1 1 I
+X Rdot 13 600 -200 200 U 50 50 1 1 I
+X Ldot 2 500 -200 200 U 50 50 1 1 I
+X one 3 -400 -200 200 U 50 50 1 1 I
+X two 4 -300 -200 200 U 50 50 1 1 I
+X three 5 -200 -200 200 U 50 50 1 1 I
+X four 6 -100 -200 200 U 50 50 1 1 I
+X five 7 0 -200 200 U 50 50 1 1 I
+X six 8 100 -200 200 U 50 50 1 1 I
+X seven 9 200 -200 200 U 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+#End Library
